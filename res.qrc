@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/aqi.png</file>
+        <file>res/background.png</file>
+        <file>res/close.png</file>
+        <file>res/humidity.png</file>
+        <file>res/pm25.png</file>
+        <file>res/search.png</file>
+        <file>res/sunrise.png</file>
+        <file>res/wind.png</file>
+        <file>res/citycode.json</file>
+    </qresource>
+</RCC>

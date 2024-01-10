@@ -4,8 +4,15 @@
 #include <QWidget>
 #include<QMenu>
 #include<QAction>
+
+//菜单
 #include <QContextMenuEvent>
-#include <QMainWindow>
+//鼠标事件
+#include <QMouseEvent>
+//网络请求
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include"weatherdata.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,24 +30,38 @@ public:
 
 private:
     Ui::Widget *ui;
-    //设置退出
-    QMenu* myExitMenu;
-    QAction* myExitAction;
 
-    void contextMenuEvent(QContextMenuEvent *event) override {
-        myExitMenu->exec(event->globalPos());
-    }
+    //退出的菜单
+    QMenu* mExitMenu;
+    //退出的行为
+    QAction* mExitAction;
+    //鼠标点击的pos距离左上角的pos的偏移
 
-    //移动窗口
-    bool isMousePressed;
-    QPoint startPos;
+    //鼠标点击的pos距离左上角的pos的偏移
+    QPoint mOffset;
+
+    QNetworkAccessManager* mNetworkAccessManager;
+
+    //今天的数据
+    TodayWeatherData mToday;
+    //未来几天的数据
+    DayWeatherData mDay[6];
+
+    //获取天气数据
+    void getWeatherInfo(QString cityName);
+
+    //解析天气数据
+    void parseWeatherData(QByteArray data);
 
 
-    void mousePressEvent(QMouseEvent *event) override;
-
-    void mouseMoveEvent(QMouseEvent *event) override;
-
-    void mouseReleaseEvent(QMouseEvent *event) override;
+    //鼠标右键事件
+    void contextMenuEvent(QContextMenuEvent *event);
+     //鼠标按下事件
+    void mousePressEvent(QMouseEvent *event);
+    // //鼠标移动事件
+    void mouseMoveEvent(QMouseEvent *event);
+    // //事件过滤器,默认无,需要重写
+    // bool eventFilter(QObject *watched, QEvent *event);
 
 
 };

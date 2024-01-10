@@ -10,6 +10,8 @@
         <file>res/wind.png</file>
     </qresource>
     <qresource prefix="/type">
+        <file>res/type/BaoXue.png</file>
+        <file>res/type/BaoYu.png</file>
         <file>res/type/BaoYuDaoDaBaoYu.png</file>
         <file>res/type/DaBaoYu.png</file>
         <file>res/type/DaBaoYuDaoTeDaBaoYu.png</file>
@@ -31,6 +33,7 @@
         <file>res/type/Wu.png</file>
         <file>res/type/XiaoDaoZhongXue.png</file>
         <file>res/type/XiaoDaoZhongYu.png</file>
+        <file>res/type/XiaoXue.png</file>
         <file>res/type/XiaoYu.png</file>
         <file>res/type/Xue.png</file>
         <file>res/type/YangSha.png</file>
