@@ -122,6 +122,7 @@ painter.setRenderHint(QPainter::Antialiasing, true);
 
   y 坐标是根据温度偏离平均值的程度计算得到的
 ```
+    //获取label的中心点
     float center = ui->lblHighCurve->height() / 2;
     for (int i = 0; i < 6; ++i) {
         //计算高温和
@@ -129,6 +130,8 @@ painter.setRenderHint(QPainter::Antialiasing, true);
     }
     //计算平均值
     tempAverage = tempSum / 6;
-    int offset = (mDay[i].maximumTemperature - tempAverage) * INCREMENT;
-     pos[i].setY(center - offset);
+    //平均值作为中心点，然后与每个点在这个中心点 的偏移量进行上下移动，INCREMENT是移动的距离
+    int offset = (mDay[i].ma，ximumTemperature - tempAverage) * INCREMENT;   
+    pos[i].setY(center - offset);
 ```   
+![image](https://github.com/sjp1237/weather-/assets/78719366/6a9b3737-a9b5-47dd-abb9-a6de6c9e807d)
