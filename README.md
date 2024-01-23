@@ -91,12 +91,44 @@ void Widget::contextMenuEvent(QContextMenuEvent *event)
 
 
  ## 实现高温曲线和低温曲线
- 1.安装事件过滤器:
- 
+ 当获取到所有的天气信息后，会将数据更新到
+ 1.**安装事件过滤器**:在 Widget 类中安装了一个事件过滤器 (eventFilter 函数)，该过滤器通过监视 ui->lblHighCurve 和 ui->lblLowCurve 控件的绘制事件
+``` 
+ bool Widget::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == ui->lblHighCurve && event->type() == QEvent::Paint) {
+        paintHigtCurve();
+    }
+    if (watched == ui->lblLowCurve && event->type() == QEvent::Paint) {
+        paintLowCurve();
+    }
+    return QWidget::eventFilter(watched, event);
+}
+``` 
 
+2. **触发重绘操作**： 触发低温 和 高温 label控件重绘的语句，通过调用 update() 函数通知触发QEvent::Paint事件，事件也会被事件过滤器给捕获到
+3. paintHigtCurve的实现
+* 设置抗锯齿效果，以获得更加平滑的绘图效果
+```
+QPainter painter(ui->lblHighCurve);
+painter.setRenderHint(QPainter::Antialiasing, true);
+```
+* 计算坐标和绘制点及文字
+   x 坐标是基于日期和标签位置计算得到的
+  ``` 
+  pos[i].setX(mWeekList[i]->pos().x() + mWeekList[i]->width() / 2);
+  ``` 
+![image](https://github.com/sjp1237/weather-/assets/78719366/d23d5aa5-3444-483a-9c55-994fd8cf3980)
 
-
-
-
- 
-
+  y 坐标是根据温度偏离平均值的程度计算得到的
+```
+    float center = ui->lblHighCurve->height() / 2;
+    for (int i = 0; i < 6; ++i) {
+        //计算高温和
+        tempSum += mDay[i].maximumTemperature;
+    }
+    //计算平均值
+    tempAverage = tempSum / 6;
+    int offset = (mDay[i].maximumTemperature - tempAverage) * INCREMENT;
+     pos[i].setY(center - offset);
+```   
