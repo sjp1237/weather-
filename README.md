@@ -7,7 +7,7 @@
 1. 实现了拖动窗口的功能，通过鼠标事件实现窗口的移动
 2. 提供右键菜单，包括退出应用选项
 3. 运行程序的时候，会自动显示广州的天气，包括当前天气、未来几天的预报、空气质量等
-4. 用户可以点击用户查询获取相对应的城市的实时天气数据
+4. 用户点击 城市查询 获取相对应的城市的实时天气数据
 5. 通过绘图实现高温曲线和低温曲线
 
 
@@ -34,19 +34,19 @@ void Widget::mouseMoveEvent(QMouseEvent *event)
 
 
 ## 右键菜单实现实现退出选项
-创建右键菜单： 在 Widget 类的构造函数中创建了一个右键菜单 mExitMenu 和一个菜单项 mExitAction。
+**创建右键菜单**： 在 Widget 类的构造函数中创建了一个右键菜单 mExitMenu 和一个菜单项 mExitAction。
 
 ``` 
 mExitMenu = new QMenu(this);
 mExitAction = new QAction(this);
 ``` 
-设置菜单项： 设置菜单项的文本和图标，并将其添加到右键菜单中。
+**设置菜单项**： 设置菜单项的文本和图标，并将其添加到右键菜单中。
 ``` 
 mExitAction->setText("退出");
 mExitAction->setIcon(QIcon(":/res/close.png"));
 mExitMenu->addAction(mExitAction);
 ``` 
-连接槽函数： 使用 connect 函数连接菜单项的触发信号与相应的槽函数。
+**连接槽函数**： 使用 connect 函数连接菜单项的触发信号与相应的槽函数。
 
 ``` 
 connect(mExitAction, &QAction::triggered, this, [=]{
@@ -55,7 +55,7 @@ connect(mExitAction, &QAction::triggered, this, [=]{
 ``` 
 上述代码表示当右键菜单的退出选项被触发时，执行 qApp->exit()，即退出应用程序。
 
-在右键菜单事件中弹出菜单： 在 contextMenuEvent 函数中，调用右键菜单的 exec 函数以弹出右键菜单。
+**在右键菜单事件中弹出菜单**： 在 contextMenuEvent 函数中，调用右键菜单的 exec 函数以弹出右键菜单。
 
 ``` 
 void Widget::contextMenuEvent(QContextMenuEvent *event)
@@ -65,5 +65,27 @@ void Widget::contextMenuEvent(QContextMenuEvent *event)
     // 事件已经处理，不需要向上传
     event->accept();
 }
-``` 
-上述代码中的 QCursor::pos() 用于获取当前鼠标的全局位置，确保右键菜单在鼠标位置弹出。 event->accept() 表示事件已经被处理，不需要向上传递
+```
+当用户右键单机部件时，会触发QContextMenuEvent 事件
+ QCursor::pos() 用于获取当前鼠标的全局位置，确保右键菜单在鼠标位置弹出。 event->accept() 表示事件已经被处理，不需要向上传递
+
+
+## 城市搜索功能的实现
+### 如何获取城市的天气数据？
+**当需要获取某个城市天气数据json时候，需要传入一个城市代码编码作为入参，地址： http://t.weather.itboy.net/api/weather/city/xxxxx ，其中xxxxx即为城市代码**
+![image](https://github.com/sjp1237/weather-/assets/78719366/eaf8e77e-ba69-4854-b83b-09b4ac541a88)
+
+
+1. **用户输入城市名**： 用户在界面上的搜索框中输入城市名，获取搜索框里面的城市名
+2. **发起网络请求**： 当用户点击搜索按钮时，会触发相应的事件处理函数。在该函数中，使用 **QNetworkAccessManager** 发起网络请求，向天气数据接口发送请求，传递用户输入的城市名。
+3. **处理网络响应**： 当网络请求完成后，会触发回调函数（在项目中是 onReplied 函数）。在该函数中，解析接口返回的 JSON 数据，提取所需的天气信息。
+4. **更新界面**： 将获取到的天气信息更新到界面上，显示实时天气数据。
+ 
+
+
+
+
+
+
+ 
+
